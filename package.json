@@ -1,7 +1,7 @@
 {
-  "name": "binance-cli",
+  "name": "binance-terminal",
   "version": "1.0.0",
-  "description": "",
+  "description": "CLI to trade cryptocurrencies by using Binance APIs",
   "main": "index.js",
   "bin": "./bin/cli.js",
   "type": "module",
