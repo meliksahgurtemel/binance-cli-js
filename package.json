@@ -1,17 +1,28 @@
 {
   "name": "binance-terminal",
-  "version": "1.0.0",
-  "description": "CLI to trade cryptocurrencies by using Binance APIs",
+  "version": "1.0.2",
+  "description": "CLI for trading cryptocurrencies by using Binance API",
   "main": "index.js",
-  "bin": "./bin/cli.js",
+  "bin": {
+    "bit": "./bin/cli.js"
+  },
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Meliksah Gurtemel",
   "license": "MIT",
+  "repository": {
+    "url": "https://github.com/meliksahgurtemel/binance-cli-js"
+  },
+  "keywords": [
+    "crypto",
+    "binance",
+    "trading"
+  ],
   "dependencies": {
     "@binance/connector": "^3.0.0",
+    "@binance/futures-connector": "^0.1.0",
     "chalk": "^5.3.0",
     "commander": "^11.1.0",
     "configstore": "^6.0.0",

@@ -1,84 +1,64 @@
 #!/usr/bin/env node
 import { program } from 'commander';
-import inquirer from 'inquirer';
-import chalk from 'chalk';
-import Config from '../lib/Config.js';
 import Order from '../lib/Order.js';
-
-const isRequired = input => (input === '' ? 'This value is required' : true);
-
-const config = {
-    async setApiKey() {
-        const conf = new Config();
-        const input = await inquirer.prompt([
-            {
-              type: 'input',
-              name: 'key',
-              message: chalk.blue('Enter API Key'),
-              validate: isRequired
-            }
-        ]);
-
-        const key = conf.setConfig('apiKey', input.key);
-        if (key) {
-            console.log(chalk.green('API key is set'));
-        }
-    },
-
-    deleteApiKey() {
-        const conf = new Config();
-        conf.deleteConfig('apiKey');
-
-        console.log(chalk.green('API key is deleted'))
-    },
-
-    async setApiSecret() {
-        const conf = new Config();
-        const input = await inquirer.prompt([
-            {
-              type: 'input',
-              name: 'key',
-              message: chalk.blue('Enter API Secret'),
-              validate: isRequired
-            }
-        ]);
-
-        const key = conf.setConfig('apiSecret', input.key);
-        if (key) {
-            console.log(chalk.green('API secret is set'));
-        }
-    },
-
-    deleteApiSecret() {
-        const conf = new Config();
-        conf.deleteConfig('apiSecret');
-
-        console.log(chalk.green('API secret is deleted'))
-    },
-}
+import Futures from '../lib/Futures.js';
+import { configHelper } from '../utils/configHelper.js'
+import { setExchangeAndUserInfo } from '../utils/pairs.js'
 
 program
-    .name('Binance-CLI')
-    .description('CLI to trade cryptocurrencies by using Binance APIs')
-    .version('1.0.0')
+    .name('Binance Terminal')
+    .description('CLI for trading cryptocurrencies by using Binance API')
+    .version('1.0.2')
 
 program.command('config')
-    .description('Manage config for api key and secret')
-    // .argument('<apiKey>', 'Binance API Key')
-    // .argument('<apiSecret>', 'Binance API Secret')
+    .description('configurations')
     .action(async () => {
-        await config.setApiKey();
-        await config.setApiSecret();
+        await configHelper.setApiKey();
+        await configHelper.setApiSecret();
+        await configHelper.setDefaultLeverage();
+        await configHelper.setDefaultMarginType();
+        await setExchangeAndUserInfo();
     });
 
-program.command('spot')
-    .description('Manage spot orders')
-    .argument('<symbol>', 'Coin symbol')
+program.command('update')
+    .description('updates necessary values for the user')
+    .action(async () => {
+        await setExchangeAndUserInfo();
+    });
+
+program.command('s')
+    .description('spot')
+    .argument('<side>', 'BUY or SELL side')
+    .argument('<symbol>', 'coin symbol')
     .argument('<quoteOrderQty>', 'USDT amount')
-    .action(async (symbol, quoteOrderQty) => {
+    .action(async (side, symbol, quoteOrderQty) => {
         const spot = new Order();
         const time = Date.now();
-        await spot.placeOrder(symbol, 'BUY', 'MARKET', quoteOrderQty, time);
+        await spot.placeOrder(
+            symbol,
+            side,
+            'MARKET',
+            quoteOrderQty,
+            time
+        );
     });
 
-program.parse();
+program.command('f')
+    .description('fucking degen gangbang mode')
+    .argument('<symbol>', 'coin symbol')
+    .argument('<side>', 'type l for Long, s for Short')
+    .argument('<quoteOrderQty>', 'USDT amount')
+    .option('-l', '--leverage', 'adjust leverage')
+    .option('-t', '--type', 'change margin type (CROSSED or ISOLATED)')
+    .action(async (symbol, side, quoteOrderQty) => {
+        const futures = new Futures();
+        const options = program.opts();
+        await futures.placeOrder(
+            symbol,
+            side,
+            quoteOrderQty,
+            options
+        );
+    });
+
+program.parse(process.argv);
