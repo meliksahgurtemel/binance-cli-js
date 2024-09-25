@@ -44,7 +44,7 @@ program.command('s')
     });
 
 program.command('f')
-    .description('fucking degen gangbang mode')
+    .description('binance futures')
     .argument('<symbol>', 'coin symbol')
     .argument('<side>', 'type l for Long, s for Short')
     .argument('<quoteOrderQty>', 'USDT amount')
