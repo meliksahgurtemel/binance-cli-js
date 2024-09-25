@@ -8,7 +8,7 @@ import { setExchangeAndUserInfo } from '../utils/pairs.js'
 program
     .name('Binance Terminal')
     .description('CLI for trading cryptocurrencies by using Binance API')
-    .version('1.0.2')
+    .version('1.0.4')
 
 program.command('config')
     .description('configurations')
@@ -44,7 +44,7 @@ program.command('s')
     });
 
 program.command('f')
-    .description('binance futures')
+    .description('futures')
     .argument('<symbol>', 'coin symbol')
     .argument('<side>', 'type l for Long, s for Short')
     .argument('<quoteOrderQty>', 'USDT amount')

@@ -3,9 +3,10 @@ import chalk from 'chalk';
 import Config from '../lib/Config.js';
 import { isRequired, isRequiredAndCorrect, isRequiredAndWithinRange } from './validations.js'
 
+const conf = new Config();
+
 export const configHelper = {
     async setApiKey() {
-        const conf = new Config();
         const input = await inquirer.prompt([
             {
               type: 'input',
@@ -22,14 +23,12 @@ export const configHelper = {
     },
 
     deleteApiKey() {
-        const conf = new Config();
         conf.deleteConfig('apiKey');
 
         console.log(chalk.green('API key is deleted'))
     },
 
     async setApiSecret() {
-        const conf = new Config();
         const input = await inquirer.prompt([
             {
               type: 'input',
@@ -46,14 +45,12 @@ export const configHelper = {
     },
 
     deleteApiSecret() {
-        const conf = new Config();
         conf.deleteConfig('apiSecret');
 
         console.log(chalk.green('API secret is deleted'))
     },
 
     async setDefaultLeverage() {
-        const conf = new Config();
         const input = await inquirer.prompt([
             {
               type: 'input',
@@ -70,7 +67,6 @@ export const configHelper = {
     },
 
     async setDefaultMarginType() {
-        const conf = new Config();
         const input = await inquirer.prompt([
             {
               type: 'input',
@@ -87,14 +83,10 @@ export const configHelper = {
     },
 
     getDefaultLeverage() {
-        const conf = new Config();
-        const data = conf.getConfig('leverage');
-        return data;
+        return conf.getConfig('leverage');
     },
 
     getDefaultMarginType() {
-        const conf = new Config();
-        const data = conf.getConfig('marginType');
-        return data;
+        return conf.getConfig('marginType');
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "binance-terminal",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "CLI for trading cryptocurrencies by using Binance API",
   "main": "index.js",
   "bin": {
